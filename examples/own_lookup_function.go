@@ -5,14 +5,6 @@ import (
 	"github.com/jieggii/lookupcfg"
 )
 
-
-type Config struct { // defining our config struct
-	AppName string `my-source:"app_name"` // define value names in the source "my-source" using tags
-	Host string `my-source:"host"`
-	Port int `my-source:"port"`
-}
-
-
 func myLookUp(key string) (string, bool) { // our own simple lookup function
 	switch key {
 	case "app_name":
@@ -27,12 +19,19 @@ func myLookUp(key string) (string, bool) { // our own simple lookup function
 }
 
 func main() {
+	type Config struct { // defining our config struct
+		AppName string `my-source:"app_name"` // define value names in the source "my-source" using tags
+		Host string `my-source:"host"`
+		Port int `my-source:"port"`
+	}
+
 	config := Config{} // create Config instance
 	result := lookupcfg.PopulateConfig(
 		"my-source",
 		myLookUp,
 		&config,
 	) // populate it using source "my-source" and our myLookUp function
-	fmt.Println("Population result:", result) // print result of population (there were not errors so there is nothing interesting)
-	fmt.Println("My config:", config) // print our populated config instance
+
+	fmt.Printf("Population result: %+v\n", result) // print result of population (there were not errors so there is nothing interesting)
+	fmt.Printf("My config: %+v\n", config) // print our populated config instance
 }
