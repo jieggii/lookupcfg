@@ -1,4 +1,4 @@
-SOURCES := ./lookupcfg.go ./util.go
+SOURCES := ./lookupcfg.go ./util.go ./convert.go
 
 .PHONY: fmt
 fmt:

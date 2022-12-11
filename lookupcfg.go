@@ -1,6 +1,7 @@
 package lookupcfg
 
 import (
+	"errors"
 	"reflect"
 	"strings"
 )
@@ -34,7 +35,7 @@ func parseFieldTag(fieldTag reflect.StructTag) (error, *FieldMeta) {
 	for _, tag := range tags {
 		parts := strings.Split(tag, ":")
 		if len(parts) != 2 {
-			panicf("Invalid tag format in ", "") // todo: maybe change panic message
+			return errors.New("invalid tag format"), nil
 		}
 		key := parts[0]
 		value := strings.Trim(parts[1], "\"")
@@ -79,7 +80,7 @@ func PopulateConfig(
 		field := configType.Field(i)
 		err, fieldMeta := parseFieldTag(field.Tag)
 		if err != nil {
-			panic(err)
+			panicf("Error parsing %v.%v's tag: %v", configType.Name(), field.Name, err)
 		}
 		if !fieldMeta.Participate {
 			//skip fields which do not participate
