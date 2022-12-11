@@ -1,6 +1,5 @@
 SOURCES := ./lookupcfg.go ./util.go
 
-
 .PHONY: fmt
 fmt:
 	gofmt -w $(SOURCES)
