@@ -15,10 +15,11 @@ func universalSet(fieldTypeKind reflect.Kind, fieldValue reflect.Value, value st
 	case reflect.String:
 		fieldValue.SetString(value)
 		return nil
+
 	case reflect.Int:
 		n, err := strconv.ParseInt(value, 10, 64)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		fieldValue.SetInt(n)
 		return nil

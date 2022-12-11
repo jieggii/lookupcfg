@@ -1,7 +1,6 @@
 package lookupcfg
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 )
@@ -23,6 +22,10 @@ func parseFieldTag(fieldTag reflect.StructTag) (error, *FieldMeta) {
 
 	if len(fieldTagString) == 0 || strings.Contains(fieldTagString, ignoranceTag) {
 		// skips fields without (or with empty) tags and fields with `lookupcfg:"ignore"` tag
+
+		// todo: think about length check. Maybe it is not necessary and panic must be
+		// triggered even on empty tags
+
 		fieldMeta.Participate = false
 		return nil, fieldMeta
 	}
@@ -48,13 +51,17 @@ func parseFieldTag(fieldTag reflect.StructTag) (error, *FieldMeta) {
 }
 
 type FieldOfIncorrectType struct {
-	Name         string
-	Value        string
-	ExpectedType string
+	StructFieldName string
+	NameInSource    string
+
+	Value             string
+	ExpectedValueType string
+
+	ConversionError error
 }
 
 type ConfigPopulationResult struct {
-	Ok                    bool                   // is true if len() of the next two variables == 0
+	//Ok                    bool                   // is true if len() of the next two variables == 0
 	MissingFields         []string               // list of fields that are missing
 	FieldsOfIncorrectType []FieldOfIncorrectType // array of fields of incorrect type
 }
@@ -64,7 +71,7 @@ func PopulateConfig(
 	lookupFunction func(string) (string, bool),
 	object interface{},
 ) *ConfigPopulationResult {
-	result := &ConfigPopulationResult{Ok: true}
+	result := &ConfigPopulationResult{}
 
 	configType := reflect.Indirect(reflect.ValueOf(object)).Type()
 
@@ -99,12 +106,22 @@ func PopulateConfig(
 			}
 			value = fieldMeta.DefaultValue
 		}
-		err = universalSet(field.Type.Kind(), fieldValue, value)
+		fieldType := field.Type
+		err = universalSet(fieldType.Kind(), fieldValue, value)
 		if err != nil {
-			fmt.Printf("Error set %v (%v) to %v. Source: %v\n", field.Name, field.Type, value, source)
-		} else {
-			fmt.Printf("Set %v (%v) to %v. Source: %v\n", field.Name, field.Type, value, source)
-		}
+			result.FieldsOfIncorrectType = append(
+				result.FieldsOfIncorrectType, FieldOfIncorrectType{
+					StructFieldName:   field.Name,
+					NameInSource:      valueName,
+					Value:             value,
+					ExpectedValueType: fieldType.String(),
+					ConversionError:   err,
+				},
+			)
+			//fmt.Printf("Error setting %v (%v) to %v. Source: %v\n", field.Name, field.Type, value, source)
+		} //else {
+		//fmt.Printf("Set %v (%v) to %v. Source: %v\n", field.Name, field.Type, value, source)
+		//}
 	}
 	return result
 }
