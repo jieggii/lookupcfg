@@ -1,4 +1,4 @@
-SOURCES := ./lookupcfg.go ./util.go ./convert.go
+SOURCES := ./*.go ./examples/*.go
 
 .PHONY: all
 all: help
