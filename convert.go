@@ -24,7 +24,6 @@ import (
 // slice
 // (are they really needed?)
 
-
 // regards: https://github.com/fscdev/betterconf/blob/717ad842e676b299112b1278e5f93d0933dc71ac/betterconf/caster.py#L38
 var booleanTrue []string = []string{"true", "on", "enable", "1", "yes", "ok"}
 var booleanFalse []string = []string{"false", "off", "disable", "0", "no"}

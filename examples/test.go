@@ -7,7 +7,7 @@ import (
 
 type AppConfig struct {
 	Host    string `env:"HOST"`
-	Port int `env:"PORT"`
+	Port    int    `env:"PORT"`
 	AppName string `env:"APP_NAME"`
 }
 

@@ -1,8 +1,8 @@
 package main
 
 import (
-"fmt"
-"github.com/jieggii/lookupcfg"
+	"fmt"
+	"github.com/jieggii/lookupcfg"
 	"os"
 )
 
@@ -14,9 +14,9 @@ import (
 func main() {
 	type Config struct { // defining our config struct
 		PostgresHost string `env:"PG_HOST"`
-		PostgresPort int `env:"PG_PORT"`
+		PostgresPort int    `env:"PG_PORT"`
 
-		PostgresUser string `env:"PG_USER"`
+		PostgresUser     string `env:"PG_USER"`
 		PostgresPassword string `env:"PG_PASSWORD"`
 	}
 
@@ -28,8 +28,8 @@ func main() {
 	) // populate it using source "env" and our os.LookupEnv function
 
 	fmt.Printf("Population result: %+v\n", result) // print result of population.
-												 // there will be some useful information if
-												 // some mistakes were made in the environmental variables
+	// there will be some useful information if
+	// some mistakes were made in the environmental variables
+
 	fmt.Printf("My config: %+v\n", config) // print our populated config instance
 }
-

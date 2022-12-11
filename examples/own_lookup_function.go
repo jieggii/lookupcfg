@@ -21,8 +21,8 @@ func myLookUp(key string) (string, bool) { // our own simple lookup function
 func main() {
 	type Config struct { // defining our config struct
 		AppName string `my-source:"app_name"` // define value names in the source "my-source" using tags
-		Host string `my-source:"host"`
-		Port int `my-source:"port"`
+		Host    string `my-source:"host"`
+		Port    int    `my-source:"port"`
 	}
 
 	config := Config{} // create Config instance
@@ -32,6 +32,9 @@ func main() {
 		&config,
 	) // populate it using source "my-source" and our myLookUp function
 
-	fmt.Printf("Population result: %+v\n", result) // print result of population (there were not errors so there is nothing interesting)
+	fmt.Printf(
+		"Population result: %+v\n",
+		result,
+	) // print result of population (there were not errors so there is nothing interesting)
 	fmt.Printf("My config: %+v\n", config) // print our populated config instance
 }
