@@ -17,4 +17,4 @@ fmt:
 
 .PHONY: todo
 todo:
-	grep -irn todo ./examples/*.go ./*.go
+	grep -irn todo $(SOURCES)
