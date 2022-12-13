@@ -1,49 +1,9 @@
 package lookupcfg
 
 import (
-	"errors"
 	"github.com/jieggii/lookupcfg/internal"
 	"reflect"
-	"strings"
 )
-
-const ignoranceTag = "lookupcfg:\"ignore\""
-
-func parseFieldTag(fieldTag reflect.StructTag) (error, *internal.FieldMeta) {
-	fieldTagString := string(fieldTag)
-
-	fieldMeta := &internal.FieldMeta{Participate: true}
-	fieldMeta.ValueSources = make(map[string]string)
-
-	if len(fieldTagString) == 0 || strings.Contains(fieldTagString, ignoranceTag) {
-		// skips fields without (or with empty) tags and fields with `lookupcfg:"ignore"` tag
-
-		// todo: think about length check. Maybe it is not necessary and panic must be
-		// triggered even on empty tags
-
-		fieldMeta.Participate = false
-		return nil, fieldMeta
-	}
-
-	tags := strings.Split(fieldTagString, " ")
-	for _, tag := range tags {
-		parts := strings.Split(tag, ":")
-		if len(parts) != 2 {
-			return errors.New("invalid tag format"), nil
-		}
-		key := parts[0]
-		value := strings.Trim(parts[1], "\"")
-		if key == "$default" {
-			// todo: check if user tries to set default value multiple times
-			// todo: check if type of default value matches field type
-			fieldMeta.DefaultValue = value
-		} else {
-			// todo: check if key already exists
-			fieldMeta.ValueSources[key] = value
-		}
-	}
-	return nil, fieldMeta
-}
 
 type Field struct {
 	StructName string // name of the field in the struct
@@ -74,7 +34,7 @@ func PopulateConfig(
 
 	for i := 0; i < configType.NumField(); i++ { // iterating over struct fields
 		field := configType.Field(i)
-		err, fieldMeta := parseFieldTag(field.Tag)
+		err, fieldMeta := internal.ParseFieldTag(field.Tag)
 		if err != nil {
 			internal.Panicf("Error parsing %v.%v's tag: %v", configType.Name(), field.Name, err)
 		}
@@ -92,7 +52,7 @@ func PopulateConfig(
 				field.Name,
 				source,
 				source,
-				ignoranceTag,
+				internal.IgnoranceTag,
 			)
 		}
 		value, ok := lookupFunction(valueName)

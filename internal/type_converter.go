@@ -98,6 +98,7 @@ func ParseBytes(x string) ([]byte, error) {
 func Parse(value string, targetType reflect.Type) (any, error) {
 	targetTypeKind := targetType.Kind()
 	switch targetTypeKind {
+
 	// boolean
 	case reflect.Bool:
 		return ParseBool(value)
@@ -131,13 +132,18 @@ func Parse(value string, targetType reflect.Type) (any, error) {
 		return ParseFloat(value, 32, targetTypeKind)
 	case reflect.Float64:
 		return ParseFloat(value, 64, targetTypeKind)
+
+	// string:
 	case reflect.String:
 		return value, nil
+
+	// slice:
 	case reflect.Slice:
-		if targetType.String() == "[]uint8" {
+		switch targetType.String() {
+		case "[]uint8":
 			return ParseBytes(value)
-		} else {
-			return nil, errors.New("slice of unknown type")
+		default:
+			return nil, errors.New("slice of unimplemented type")
 		}
 	default:
 		return nil, fmt.Errorf("unimplemented type %v (of kind %v)", targetType, targetTypeKind)
