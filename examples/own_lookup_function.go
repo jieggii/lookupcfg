@@ -13,8 +13,6 @@ func myLookUp(key string) (string, bool) { // our own simple lookup function
 		return "127.0.0.1", true
 	case "port":
 		return "8080", true
-	case "some":
-		return "hello", true
 	default:
 		return "", false
 	}
