@@ -23,7 +23,7 @@ func main() {
 	config := Config{} // create Config instance
 	result := lookupcfg.PopulateConfig(
 		"env",
-		os.LookupEnv, //
+		os.LookupEnv,
 		&config,
 	) // populate it using source "env" and our os.LookupEnv function
 

@@ -2,23 +2,17 @@ package lookupcfg
 
 import (
 	"errors"
+	"github.com/jieggii/lookupcfg/internal"
 	"reflect"
 	"strings"
 )
 
 const ignoranceTag = "lookupcfg:\"ignore\""
 
-type FieldMeta struct {
-	Participate bool // indicates if this field participates in all stuff that this lib does
-
-	ValueSources map[string]string // map of sources of value. E.g {"env": "HOST", "json": "host"}
-	DefaultValue string            // default value is stored as string because we parse it from string
-}
-
-func parseFieldTag(fieldTag reflect.StructTag) (error, *FieldMeta) {
+func parseFieldTag(fieldTag reflect.StructTag) (error, *internal.FieldMeta) {
 	fieldTagString := string(fieldTag)
 
-	fieldMeta := &FieldMeta{Participate: true}
+	fieldMeta := &internal.FieldMeta{Participate: true}
 	fieldMeta.ValueSources = make(map[string]string)
 
 	if len(fieldTagString) == 0 || strings.Contains(fieldTagString, ignoranceTag) {
@@ -51,20 +45,22 @@ func parseFieldTag(fieldTag reflect.StructTag) (error, *FieldMeta) {
 	return nil, fieldMeta
 }
 
-type FieldOfIncorrectType struct {
-	StructFieldName string
-	NameInSource    string
+type Field struct {
+	StructName string // name of the field in the struct
+	SourceName string // name of the field in the source
 
-	Value             string
-	ExpectedValueType string
+	RawValue          string       // value of the field, provided by the source
+	ExpectedValueType reflect.Type // expected type of the value
+}
 
-	ConversionError error
+type IncorrectTypeField struct {
+	Field
+	ConversionError error // error returned by type conversion function
 }
 
 type ConfigPopulationResult struct {
-	//Ok                    bool                   // is true if len() of the next two variables == 0
-	MissingFields         []string               // list of fields that are missing
-	FieldsOfIncorrectType []FieldOfIncorrectType // array of fields of incorrect type
+	MissingFields       []Field              // list of fields that are missing
+	IncorrectTypeFields []IncorrectTypeField // array of fields of incorrect type
 }
 
 func PopulateConfig(
@@ -80,7 +76,7 @@ func PopulateConfig(
 		field := configType.Field(i)
 		err, fieldMeta := parseFieldTag(field.Tag)
 		if err != nil {
-			panicf("Error parsing %v.%v's tag: %v", configType.Name(), field.Name, err)
+			internal.Panicf("Error parsing %v.%v's tag: %v", configType.Name(), field.Name, err)
 		}
 		if !fieldMeta.Participate {
 			//skip fields which do not participate
@@ -90,7 +86,7 @@ func PopulateConfig(
 
 		valueName, ok := fieldMeta.ValueSources[source]
 		if !ok { // if `source` provided as function param is not present in the struct's field tag
-			panicf(
+			internal.Panicf(
 				"%v.%v does not have tag \"%v\" (for the source \"%v\"). Use `%v` tag if you want to ignore this field.",
 				configType.Name(),
 				field.Name,
@@ -102,27 +98,32 @@ func PopulateConfig(
 		value, ok := lookupFunction(valueName)
 		if !ok { // if value was not received from the provided source
 			if fieldMeta.DefaultValue == "" { // if default value of the field was not indicated
-				result.MissingFields = append(result.MissingFields, valueName)
+				result.MissingFields = append(result.MissingFields, Field{
+					StructName:        field.Name,
+					SourceName:        valueName,
+					RawValue:          value,
+					ExpectedValueType: field.Type,
+				})
 				continue
 			}
 			value = fieldMeta.DefaultValue
 		}
-		fieldType := field.Type
-		err = universalSet(fieldType.Kind(), fieldValue, value)
+		convertedValue, err := internal.Parse(value, field.Type)
 		if err != nil {
-			result.FieldsOfIncorrectType = append(
-				result.FieldsOfIncorrectType, FieldOfIncorrectType{
-					StructFieldName:   field.Name,
-					NameInSource:      valueName,
-					Value:             value,
-					ExpectedValueType: fieldType.String(),
-					ConversionError:   err,
+			result.IncorrectTypeFields = append(
+				result.IncorrectTypeFields, IncorrectTypeField{
+					Field: Field{
+						StructName:        field.Name,
+						SourceName:        valueName,
+						RawValue:          value,
+						ExpectedValueType: field.Type,
+					},
+					ConversionError: err,
 				},
 			)
-			//fmt.Printf("Error setting %v (%v) to %v. Source: %v\n", field.Name, field.Type, value, source)
-		} //else {
-		//fmt.Printf("Set %v (%v) to %v. Source: %v\n", field.Name, field.Type, value, source)
-		//}
+			continue
+		}
+		fieldValue.Set(reflect.ValueOf(convertedValue))
 	}
 	return result
 }

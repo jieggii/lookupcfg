@@ -1,4 +1,4 @@
-SOURCES := ./*.go ./examples/*.go
+SOURCES := ./*.go ./examples/*.go ./internal/*.go
 
 .PHONY: all
 all: help
