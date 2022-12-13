@@ -5,11 +5,13 @@ import (
 	"reflect"
 )
 
+// Field represents struct field after reading value from the source
 type Field struct {
 	StructName string // name of the field in the struct
 	SourceName string // name of the field in the source
 
-	RawValue          string       // value of the field, provided by the source
+	RawValue string // value of the field, read from source
+	// (may be equal to "" if it was not provided by source)
 	ExpectedValueType reflect.Type // expected type of the value
 }
 
@@ -23,6 +25,7 @@ type ConfigPopulationResult struct {
 	IncorrectTypeFields []IncorrectTypeField // array of fields of incorrect type
 }
 
+// PopulateConfig fills the `object`'s fields with values read from the `source` using `lookupFunction`
 func PopulateConfig(
 	source string,
 	lookupFunction func(string) (string, bool),
