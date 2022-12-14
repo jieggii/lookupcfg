@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-// Field represents struct field after reading value from the source
+// Field represents struct field after reading value from the source.
 type Field struct {
 	StructName string // name of the field in the struct
 	SourceName string // name of the field in the source
@@ -16,6 +16,7 @@ type Field struct {
 	ExpectedValueType reflect.Type // expected type of the value
 }
 
+// IncorrectTypeField represents field of incorrect type.
 type IncorrectTypeField struct {
 	Field
 	ConversionError error // error returned by type conversion function
@@ -28,7 +29,7 @@ type ConfigPopulationResult struct {
 	IncorrectTypeFields []IncorrectTypeField // array of fields of incorrect type
 }
 
-// PopulateConfig fills the `object`'s fields with values read from the `source` using `lookupFunction`
+// PopulateConfig fills the `object`'s fields with values read from the `source` using `lookupFunction`.
 func PopulateConfig(
 	source string,
 	lookupFunction func(string) (string, bool),
