@@ -1,4 +1,4 @@
-SOURCES := ./*.go ./examples/*.go ./internal/*.go
+SOURCES := ./*.go ./internal/*.go
 MAX_LINE_LENGTH := 105
 
 .PHONY: all
@@ -19,7 +19,7 @@ gofmt:
 
 .PHONY: golines
 golines:
-	golines --max-len $(MAX_LINE_LENGTH) -w ($SOURCES)
+	golines --max-len $(MAX_LINE_LENGTH) -w $(SOURCES)
 
 .PHONY: fmt
 fmt: gofmt golines
