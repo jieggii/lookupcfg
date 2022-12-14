@@ -21,6 +21,8 @@ type IncorrectTypeField struct {
 	ConversionError error // error returned by type conversion function
 }
 
+// ConfigPopulationResult represents result of config population.
+// Reports about mismatches between values provided by source and provided struct.
 type ConfigPopulationResult struct {
 	MissingFields       []Field              // list of fields that are missing
 	IncorrectTypeFields []IncorrectTypeField // array of fields of incorrect type
