@@ -33,7 +33,7 @@ func main() {
 	// populate it using source "my-source" and our myLookUp function
 	result := lookupcfg.PopulateConfig("my-source", myLookUp, &config)
 
-	// print result of population (there were no errors so there is nothing interesting)
+	// print result of population (there were no mistakes so there is nothing interesting)
 	fmt.Printf("Population result: %+v\n", result)
 	// >>> Population result: &{MissingFields:[] IncorrectTypeFields:[]}
 
