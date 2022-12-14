@@ -1,6 +1,7 @@
 package lookupcfg
 
 import (
+	"fmt"
 	"github.com/jieggii/lookupcfg/internal"
 	"reflect"
 )
@@ -39,7 +40,7 @@ func PopulateConfig(
 		field := configType.Field(i)
 		err, fieldMeta := internal.ParseFieldTag(field.Tag)
 		if err != nil {
-			internal.Panicf("Error parsing %v.%v's tag: %v", configType.Name(), field.Name, err)
+			panic(fmt.Sprintf("Error parsing %v.%v's tag: %v", configType.Name(), field.Name, err))
 		}
 		if !fieldMeta.Participate {
 			//skip fields which do not participate
@@ -49,13 +50,15 @@ func PopulateConfig(
 
 		valueName, ok := fieldMeta.ValueSources[source]
 		if !ok { // if `source` provided as function param is not present in the struct's field tag
-			internal.Panicf(
-				"%v.%v does not have tag \"%v\" (for the source \"%v\"). Use `%v` tag if you want to ignore this field.",
-				configType.Name(),
-				field.Name,
-				source,
-				source,
-				internal.IgnoranceTag,
+			panic(
+				fmt.Sprintf(
+					"%v.%v does not have tag \"%v\" (for the source \"%v\"). Use `%v` tag if you want to ignore this field.",
+					configType.Name(),
+					field.Name,
+					source,
+					source,
+					internal.IgnoranceTag,
+				),
 			)
 		}
 		value, ok := lookupFunction(valueName)
