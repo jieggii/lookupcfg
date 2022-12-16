@@ -9,12 +9,11 @@ import (
 )
 
 // todo:
-// complex64
-// complex128
+// slice of anything except []uint8
 // array
 // map
-// slice of anything except []uint8
-// (are they really needed?)
+// complex64
+// complex128
 
 var booleanTrue = []string{"true", "on", "enable", "1", "yes", "ok"}
 var booleanFalse = []string{"false", "off", "disable", "0", "no"}
@@ -95,7 +94,7 @@ func parseSliceOfBytes(x string) ([]byte, error) {
 	return []byte(x), nil
 }
 
-func Parse(value string, targetType reflect.Type) (any, error) {
+func ParseValue(value string, targetType reflect.Type) (any, error) {
 	targetTypeKind := targetType.Kind()
 	switch targetTypeKind {
 
