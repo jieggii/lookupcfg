@@ -64,27 +64,27 @@ func PopulateConfig(
 				),
 			)
 		}
-		value, ok := lookupFunction(valueName)
+		rawValue, ok := lookupFunction(valueName)
 		if !ok { // if value was not received from the provided source
 			if fieldMeta.DefaultValue == "" { // if default value of the field was not indicated
 				result.MissingFields = append(result.MissingFields, Field{
 					StructName:        field.Name,
 					SourceName:        valueName,
-					RawValue:          value,
+					RawValue:          rawValue,
 					ExpectedValueType: field.Type,
 				})
 				continue
 			}
-			value = fieldMeta.DefaultValue
+			rawValue = fieldMeta.DefaultValue
 		}
-		convertedValue, err := internal.Parse(value, field.Type)
+		convertedValue, err := internal.ParseValue(rawValue, field.Type)
 		if err != nil {
 			result.IncorrectTypeFields = append(
 				result.IncorrectTypeFields, IncorrectTypeField{
 					Field: Field{
 						StructName:        field.Name,
 						SourceName:        valueName,
-						RawValue:          value,
+						RawValue:          rawValue,
 						ExpectedValueType: field.Type,
 					},
 					ConversionError: err,
