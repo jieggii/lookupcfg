@@ -66,7 +66,7 @@ func PopulateConfig(
 		}
 		rawValue, ok := lookupFunction(valueName)
 		if !ok { // if value was not received from the provided source
-			if fieldMeta.DefaultValue == "" { // if default value of the field was not indicated
+			if !fieldMeta.DefaultValueWasSet { // if default value of the field was not indicated
 				result.MissingFields = append(result.MissingFields, Field{
 					StructName:        field.Name,
 					SourceName:        valueName,
