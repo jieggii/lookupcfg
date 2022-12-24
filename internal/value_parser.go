@@ -94,53 +94,53 @@ func parseSliceOfBytes(x string) ([]byte, error) {
 	return []byte(x), nil
 }
 
-func ParseValue(value string, targetType reflect.Type) (any, error) {
+func ParseValue(x string, targetType reflect.Type) (any, error) {
 	targetTypeKind := targetType.Kind()
 	switch targetTypeKind {
 
 	// boolean:
 	case reflect.Bool:
-		return parseBool(value)
+		return parseBool(x)
 
 	// signed int:
 	case reflect.Int:
-		return parseInt(value, 64, targetTypeKind)
+		return parseInt(x, 64, targetTypeKind)
 	case reflect.Int8:
-		return parseInt(value, 8, targetTypeKind)
+		return parseInt(x, 8, targetTypeKind)
 	case reflect.Int16:
-		return parseInt(value, 16, targetTypeKind)
+		return parseInt(x, 16, targetTypeKind)
 	case reflect.Int32:
-		return parseInt(value, 32, targetTypeKind)
+		return parseInt(x, 32, targetTypeKind)
 	case reflect.Int64:
-		return parseInt(value, 64, targetTypeKind)
+		return parseInt(x, 64, targetTypeKind)
 
 	// unsigned int:
 	case reflect.Uint:
-		return parseUnsignedInt(value, 64, targetTypeKind)
+		return parseUnsignedInt(x, 64, targetTypeKind)
 	case reflect.Uint8:
-		return parseUnsignedInt(value, 8, targetTypeKind)
+		return parseUnsignedInt(x, 8, targetTypeKind)
 	case reflect.Uint16:
-		return parseUnsignedInt(value, 16, targetTypeKind)
+		return parseUnsignedInt(x, 16, targetTypeKind)
 	case reflect.Uint32:
-		return parseUnsignedInt(value, 32, targetTypeKind)
+		return parseUnsignedInt(x, 32, targetTypeKind)
 	case reflect.Uint64:
-		return parseUnsignedInt(value, 64, targetTypeKind)
+		return parseUnsignedInt(x, 64, targetTypeKind)
 
 	// float:
 	case reflect.Float32:
-		return parseFloat(value, 32, targetTypeKind)
+		return parseFloat(x, 32, targetTypeKind)
 	case reflect.Float64:
-		return parseFloat(value, 64, targetTypeKind)
+		return parseFloat(x, 64, targetTypeKind)
 
 	// string:
 	case reflect.String:
-		return value, nil
+		return x, nil
 
 	// slice:
 	case reflect.Slice:
 		sliceType := targetType.String()
 		if sliceType == "[]uint8" {
-			return parseSliceOfBytes(value)
+			return parseSliceOfBytes(x)
 		}
 		fallthrough
 	default:
