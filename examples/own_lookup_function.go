@@ -22,9 +22,10 @@ func myLookUp(key string) (string, bool) {
 func main() {
 	// defining our config struct
 	type Config struct {
-		AppName string `my-source:"app_name"` // define value names in the source "my-source" using tags
-		Host    string `my-source:"host"`
-		Port    int    `my-source:"port"`
+		AppName   string `my-source:"app_name"` // define value names in the source "my-source" using tags
+		Host      string `my-source:"host"`
+		Port      int    `my-source:"port"`
+		Something string `my-source:"something" $default:"something!"`
 	}
 
 	// create Config instance
