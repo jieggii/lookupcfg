@@ -32,7 +32,7 @@ func ParseFieldTag(fieldTag reflect.StructTag) (error, *FieldMeta) {
 		return nil, fieldMeta
 	}
 
-	tags := strings.Split(fieldTagString, " ")
+	tags := strings.Fields(fieldTagString)
 	for _, tag := range tags {
 		parts := strings.Split(tag, ":")
 		if len(parts) != 2 {
