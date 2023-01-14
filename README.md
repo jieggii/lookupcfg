@@ -16,8 +16,8 @@ func main() {
     type Config struct {
         Host string `env:"HOST"` // use tags to define source name (key) 
                                  // and value name in this source (value)
-		Port int `env:"PORT"`
-	}
+	Port int `env:"PORT"`
+    }
 	config := Config{}
 }
 ```
@@ -39,7 +39,7 @@ func lookup(key string) (value string, found bool) {
 func main() {
 	type Config struct {
 		Host string `env:"HOST"` // use tags to define source name (key) 
-                                 // and value name in this source (value)
+                                         // and value name in this source (value)
 		Port int `env:"PORT"`
 	}
 	config := Config{}
@@ -63,7 +63,7 @@ func lookup(key string) (value string, found bool) {
 func main() {
 	type Config struct {
 		Host string `env:"HOST"` // use tags to define source name (key)
-                                 // and value name in this source (value)
+                                         // and value name in this source (value)
 		Port int `env:"PORT"`
 	}
 	config := Config{}
