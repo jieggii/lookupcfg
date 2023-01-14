@@ -81,6 +81,7 @@ func main() {
 	// >>> My config: {Host:localhost Port:8888}
 }
 ```
+Done!
 
-More examples can be found in the [examples](https://github.com/jieggii/lookupcfg/tree/master/examples) directory (๑꧆◡꧆๑).
+More examples can be found in the [examples](https://github.com/jieggii/lookupcfg/tree/master/examples) directory  (´｡• ◡ •｡`) ♡.
 
