@@ -3,6 +3,11 @@ Easily define and populate your configs from any kind of source using lookup fun
 
 Work is in progress for now, stay tuned (=^ ◡ ^=).
 
+## Installation 
+```shell
+go get github.com/jieggii/lookupcfg
+```
+
 ## Usage
 It's so simple!
 
