@@ -10,12 +10,12 @@ First of all, define your config struct and create config instance:
 ```go
 package main
 
-import "github.com/jieggii/lookupcfg" // import lookupcfg module
+import "github.com/jieggii/lookupcfg"
 
 func main() {
     type Config struct {
         Host string `env:"HOST"` // use tags to define source name (key) 
-		                         // and value name in this source (value)
+                                 // and value name in this source (value)
 		Port int `env:"PORT"`
 	}
 	config := Config{}
@@ -39,7 +39,7 @@ func lookup(key string) (value string, found bool) {
 func main() {
 	type Config struct {
 		Host string `env:"HOST"` // use tags to define source name (key) 
-		// and value name in this source (value)
+                                 // and value name in this source (value)
 		Port int `env:"PORT"`
 	}
 	config := Config{}
@@ -63,7 +63,7 @@ func lookup(key string) (value string, found bool) {
 func main() {
 	type Config struct {
 		Host string `env:"HOST"` // use tags to define source name (key)
-		// and value name in this source (value)
+                                 // and value name in this source (value)
 		Port int `env:"PORT"`
 	}
 	config := Config{}
