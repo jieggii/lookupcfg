@@ -26,6 +26,9 @@ func main() {
 		Host      string `my-source:"host"`
 		Port      int    `my-source:"port"`
 		Something string `my-source:"something" $default:"something!"`
+
+		Ignored1 float64 `lookupcfg:"ignore"` // this is an ignored field
+		Ignored2 float64 // this field is ignored too
 	}
 
 	// create Config instance
