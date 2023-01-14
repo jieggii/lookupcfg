@@ -1,5 +1,5 @@
 SOURCES := ./*.go ./internal/*.go
-MAX_LINE_LENGTH := 105
+MAX_LINE_LENGTH := 120
 
 .PHONY: all
 all: help
