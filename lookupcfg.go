@@ -1,3 +1,5 @@
+// Package lookupcfg allows you to define and populate
+// your configs from any kind of source using lookup function!
 package lookupcfg
 
 import (
