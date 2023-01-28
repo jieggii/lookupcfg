@@ -8,26 +8,32 @@ import (
 	"strings"
 )
 
-// todo:
+// todo (is this really needed?):
 // slice of anything except []uint8
 // array
 // map
 // complex64
 // complex128
 
-var booleanTrue = []string{"true", "on", "enable", "1", "yes", "ok"}
-var booleanFalse = []string{"false", "off", "disable", "0", "no"}
+var booleanValues = map[string]bool{
+	"true":   true,
+	"on":     true,
+	"enable": true,
+	"1":      true,
+	"yes":    true,
+	"ok":     true,
+
+	"false":   false,
+	"off":     false,
+	"disable": false,
+	"0":       false,
+	"no":      false,
+}
 
 func parseBool(x string) (bool, error) {
-	x = strings.ToLower(x)
-	for _, trueString := range booleanTrue {
-		if x == trueString {
-			return true, nil
-		}
-	}
-	for _, falseString := range booleanFalse {
-		if x == falseString {
-			return false, nil
+	for key, value := range booleanValues {
+		if strings.ToLower(x) == key {
+			return value, nil
 		}
 	}
 	return false, errors.New("this string can't be represented as boolean value")
