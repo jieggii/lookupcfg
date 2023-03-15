@@ -1,8 +1,6 @@
 # lookupcfg
 Easily define and populate your configs from any kind of source using lookup function!
 
-Work is in progress for now, stay tuned (=^ ◡ ^=).
-
 ## Installation 
 ```shell
 go get github.com/jieggii/lookupcfg
@@ -89,4 +87,3 @@ func main() {
 Done!
 
 More examples can be found in the [examples](https://github.com/jieggii/lookupcfg/tree/master/examples) directory  (´｡• ◡ •｡`) ♡.
-
