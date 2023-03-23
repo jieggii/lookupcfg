@@ -30,3 +30,7 @@ todo:
 .PHONY: test
 test:
 	go test ./internal/
+
+.PHONY: doc
+doc:
+	go doc -all
