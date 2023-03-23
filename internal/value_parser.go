@@ -31,12 +31,11 @@ var booleanValues = map[string]bool{
 }
 
 func parseBool(x string) (bool, error) {
-	for key, value := range booleanValues {
-		if strings.ToLower(x) == key {
-			return value, nil
-		}
+	value, found := booleanValues[strings.ToLower(x)]
+	if !found {
+		return false, errors.New("this string can't be represented as boolean value")
 	}
-	return false, errors.New("this string can't be represented as boolean value")
+	return value, nil
 }
 
 func parseInt(x string, bitSize int, intKind reflect.Kind) (any, error) {
@@ -56,7 +55,7 @@ func parseInt(x string, bitSize int, intKind reflect.Kind) (any, error) {
 	case reflect.Int64:
 		return i64, nil
 	default:
-		panic(fmt.Sprintf("unknown int kind %v", intKind))
+		panic(fmt.Errorf("unknown int kind %v", intKind))
 	}
 }
 
@@ -77,7 +76,7 @@ func parseUnsignedInt(x string, bitSize int, uintKind reflect.Kind) (any, error)
 	case reflect.Uint64:
 		return ui64, nil
 	default:
-		panic(fmt.Sprintf("unknown uint kind %v", uintKind))
+		panic(fmt.Errorf("unknown uint kind %v", uintKind))
 	}
 }
 
