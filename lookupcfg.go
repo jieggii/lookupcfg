@@ -4,8 +4,9 @@ package lookupcfg
 
 import (
 	"fmt"
-	"github.com/jieggii/lookupcfg/internal"
 	"reflect"
+
+	"github.com/jieggii/lookupcfg/internal"
 )
 
 // Field represents struct field after reading value from the source.
@@ -45,7 +46,7 @@ func PopulateConfig(
 		field := configType.Field(i)
 		fieldProperties, err := internal.ParseFieldTag(field.Tag)
 		if err != nil {
-			panic(fmt.Sprintf("Error parsing %v.%v's tag: %v", configType.Name(), field.Name, err))
+			panic(fmt.Errorf("error parsing %v.%v's tag: %v", configType.Name(), field.Name, err))
 		}
 		if !fieldProperties.Participate {
 			//skip fields which do not participate
@@ -56,8 +57,8 @@ func PopulateConfig(
 		valueName, found := fieldProperties.ValueSources[source]
 		if !found { // if `source` provided as function param is not present in the struct's field tag
 			panic(
-				fmt.Sprintf(
-					"%v.%v does not have tag \"%v\" (for the source \"%v\"). Use `%v` tag if you want to ignore this field.",
+				fmt.Errorf(
+					"%v.%v does not have tag \"%v\" (for the source \"%v\"). Use `%v` tag if you want to ignore this field",
 					configType.Name(),
 					field.Name,
 					source,
