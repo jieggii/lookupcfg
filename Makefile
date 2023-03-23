@@ -10,6 +10,7 @@ help:
 	@echo "---------------------------------------------------------"
 	@echo "make fmt     format source code (using gofmt and golines)"
 	@echo "make test    run go test for lookupcfg package           "
+	@echo "make doc     run go doc for lookupcfg package            "
 	@echo "make todo    grep TODOs                                  "
 
 .PHONY: gofmt
