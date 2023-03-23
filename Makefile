@@ -9,6 +9,7 @@ help:
 	@echo "COMMAND      DESCRIPTION                                 "
 	@echo "---------------------------------------------------------"
 	@echo "make fmt     format source code (using gofmt and golines)"
+	@echo "make test    run go test for lookupcfg package           "
 	@echo "make todo    grep TODOs                                  "
 
 .PHONY: gofmt
@@ -25,3 +26,7 @@ fmt: gofmt golines
 .PHONY: todo
 todo:
 	grep -irn todo $(SOURCES)
+
+.PHONY: test
+test:
+	go test ./internal/
