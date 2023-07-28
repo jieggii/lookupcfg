@@ -21,7 +21,7 @@ func main() {
                                  // and value name in this source (value)
 	Port int `env:"PORT"`
     }
-	config := Config{}
+    config := Config{}
 }
 ```
 
