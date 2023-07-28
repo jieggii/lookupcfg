@@ -1,7 +1,17 @@
 # lookupcfg
 Easily define and populate your configs from any kind of source using lookup function!
 
-## Installation 
+## What is lookup function?
+***Lookup function*** is a function which accepts only one argument: **key** (of type `string`) and returns two values:
+* **value** (of type string `string`) - value which matches with the provided **key**
+* **found** (of type `bool`) - is equal to `true` if provided **key** exists and **value** was found. Otherwise, it is equal to `false`
+
+Signature of lookup functions (in Go):
+```go
+func(key string) (value string, found bool)
+```
+
+## Installation
 ```shell
 go get github.com/jieggii/lookupcfg
 ```
@@ -17,7 +27,7 @@ import "github.com/jieggii/lookupcfg"
 
 func main() {
     type Config struct {
-        Host string `env:"HOST"` // use tags to define source name (key) 
+        Host string `env:"HOST"` // use tags to define source name (key)
                                  // and value name in this source (value)
 	Port int `env:"PORT"`
     }
@@ -41,7 +51,7 @@ func lookup(key string) (value string, found bool) {
 
 func main() {
 	type Config struct {
-		Host string `env:"HOST"` // use tags to define source name (key) 
+		Host string `env:"HOST"` // use tags to define source name (key)
                                          // and value name in this source (value)
 		Port int `env:"PORT"`
 	}
